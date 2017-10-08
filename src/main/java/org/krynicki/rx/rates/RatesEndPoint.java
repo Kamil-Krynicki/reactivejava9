@@ -19,31 +19,31 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class RatesEndPoint {
-	
+
 	@Autowired
 	private ExchangeRatesService exchangeRatesService;
-	
+
     @GetMapping(path = "rates/{baseCurrency}/{counterCurrency}", produces = MediaType.APPLICATION_JSON_VALUE)
     public RateResponse getRates(
     		@PathVariable final String baseCurrency,
     		@PathVariable final String counterCurrency) {
-    	
+
     	final RateResponse response = new RateResponse();
     	final CountDownLatch outerLatch = new CountDownLatch(1);
-    	
+
     	exchangeRatesService.getExchangeRates(baseCurrency)
     	.subscribe(new SingleObserver<ExchangeRatesResponse>() {
 
 			public void onSubscribe(Disposable d) {}
 
 			public void onSuccess(ExchangeRatesResponse exchangeRatesResponse) {
-				
+
 				if (exchangeRatesResponse.getRates().containsKey(counterCurrency)) {
-					response.setRate(exchangeRatesResponse.getRates().get(counterCurrency));					
+					response.setRate(exchangeRatesResponse.getRates().get(counterCurrency));
 				} else {
 		    		//async.resume(new CurrencyNotFoundException());
 				}
-				
+
 				outerLatch.countDown();
 			}
 
@@ -60,7 +60,7 @@ public class RatesEndPoint {
     	} catch (Exception e) {
     		//async.resume(new InternalErrorException());
     	}
-    	
+
 		return response;
     }
 }

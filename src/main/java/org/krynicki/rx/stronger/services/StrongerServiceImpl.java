@@ -1,13 +1,6 @@
 package org.krynicki.rx.stronger.services;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.math.BigDecimal;
-import java.net.HttpURLConnection;
-import java.net.URI;
-import java.net.URL;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,33 +10,27 @@ import org.krynicki.rx.rates.adapter.ExchangeRatesAdapter;
 import org.krynicki.rx.model.ExchangeRatesResponse;
 
 import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.Single;
 import io.reactivex.functions.BiFunction;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
 
 
 @Component
 public class StrongerServiceImpl implements StrongerService {
 
-	private static final String HISTORY_RATE_BASE_END_POINT = "http://api.fixer.io/%s?base=%s";
-	private static final String DATE_FORMAT = "yyyy-MM-dd";
-
 	private ExchangeRatesAdapter ratesAdapter;
 	
 	@Autowired
 	public StrongerServiceImpl(ExchangeRatesAdapter exchangeRatesAdapter) {
-		
+
 		this.ratesAdapter = exchangeRatesAdapter;
 	}
 
 	public Single<Boolean> isStronger(final String baseCurrency, final String counterCurrency) {
 
 		return Observable.zip(
-				ratesAdapter.getExchangeRates(baseCurrency).toObservable(), 
-				yesterdayRate(baseCurrency), 
+				ratesAdapter.getExchangeRates(baseCurrency).toObservable(),
+				ratesAdapter.getExchangeRates(baseCurrency, getYesterday()).toObservable(),
 				new BiFunction<ExchangeRatesResponse, ExchangeRatesResponse, Boolean>() {
 					public Boolean apply(ExchangeRatesResponse t1, ExchangeRatesResponse t2) throws Exception {
 
@@ -59,35 +46,9 @@ public class StrongerServiceImpl implements StrongerService {
 		}).toSingle();
 	}
 
-	private Observable<ExchangeRatesResponse> yesterdayRate(final String baseCurrency) {
-		
-		return Observable.create(new ObservableOnSubscribe<ExchangeRatesResponse>() {
-
-			public void subscribe(ObservableEmitter<ExchangeRatesResponse> emitter) throws Exception {
-				
-				try {
-					String yesterdaysDate = getYesterdaysDateFormatted();
-					String endPoint = String.format(HISTORY_RATE_BASE_END_POINT, yesterdaysDate, baseCurrency);
-		    		URI obj = new URI(endPoint);
-
-					RestTemplate template = new RestTemplate();
-					ExchangeRatesResponse re = template.getForObject(new URI(endPoint), ExchangeRatesResponse.class);
-
-		    		emitter.onNext(re);
-		    		emitter.onComplete();
-		    		
-				} catch (Exception e) {
-					//emitter.onError(new InternalErrorException());
-				}
-			}
-		});
-	}
-	
-	private String getYesterdaysDateFormatted() {
-		
-		DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
+	private Calendar getYesterday() {
 		Calendar calendar = Calendar.getInstance();
 		calendar.add(Calendar.DATE, -30);
-		return dateFormat.format(calendar.getTime());
+		return calendar;
 	}
 }

@@ -42,18 +42,18 @@ public class ExchangeRatesServiceImplTests {
 	
 	@Test
 	public void testHappyPath() {
-		
+
 		ExchangeRatesResponse expectedResponse = createResponse();
-		
+
 		doReturn(Single.just(expectedResponse)).when(mockAdapter).getExchangeRates(baseCurrency);
-		
+
 		TestSubscriber<ExchangeRatesResponse> testSubscriber = new TestSubscriber<ExchangeRatesResponse>();
-		
+
 		sut.getExchangeRates(baseCurrency).toFlowable().subscribe(testSubscriber);
-		
+
 		testSubscriber.assertValue(expectedResponse);
 	}
-		
+
 //	@Test
 //	public void testSadPath() {
 //
@@ -65,30 +65,30 @@ public class ExchangeRatesServiceImplTests {
 //
 //		testSubscriber.assertError(InternalErrorException.class);
 //	}
-	
+
 	@Test
 	public void testSubscription() {
-		
+
 		doReturn(Single.never()).when(mockAdapter).getExchangeRates(baseCurrency);
-		
+
 		TestSubscriber<ExchangeRatesResponse> testSubscriber = new TestSubscriber<ExchangeRatesResponse>();
-		
+
 		sut.getExchangeRates(baseCurrency).toFlowable().subscribe(testSubscriber);
-		
+
 		testSubscriber.assertSubscribed();
 	}
-	
+
 	@Test
 	public void testComplete() {
-		
+
 		ExchangeRatesResponse expectedResponse = createResponse();
-		
+
 		doReturn(Single.just(expectedResponse)).when(mockAdapter).getExchangeRates(baseCurrency);
-		
+
 		TestSubscriber<ExchangeRatesResponse> testSubscriber = new TestSubscriber<ExchangeRatesResponse>();
-		
+
 		sut.getExchangeRates(baseCurrency).toFlowable().subscribe(testSubscriber);
-		
+
 		testSubscriber.assertComplete();
 	}
 	
