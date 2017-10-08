@@ -6,33 +6,25 @@ import io.reactivex.disposables.Disposable;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.container.AsyncResponse;
-import javax.ws.rs.container.Suspended;
-import javax.ws.rs.core.MediaType;
-
-import org.glassfish.jersey.server.ManagedAsync;
-import org.krynicki.rx.exceptions.InternalErrorException;
 import org.krynicki.rx.stronger.services.StrongerService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.krynicki.rx.stronger.responses.StrongerResponse;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
 
-@Path("org/krynicki/rx/stronger/{baseCurrency}/{counterCurrency}")
+@RestController
 public class StrongerEndPoint {
 
 	@Autowired
 	private StrongerService strongerService;
 
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @ManagedAsync
-    public void getRates(@Suspended final AsyncResponse async, 
-    		@PathParam("baseCurrency") final String baseCurrency,
-    		@PathParam("counterCurrency") final String counterCurrency) {
+    @GetMapping(path = "/stronger/{baseCurrency}/{counterCurrency}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public StrongerResponse getRates(
+    		@PathVariable final String baseCurrency,
+    		@PathVariable final String counterCurrency) {
     	
     	final StrongerResponse response = new StrongerResponse();
     	
@@ -48,7 +40,7 @@ public class StrongerEndPoint {
 			}
 
 			public void onError(Throwable e) {
-				async.resume(e);
+				//async.resume(e);
 				outerLatch.countDown();
 			}
 		});
@@ -56,13 +48,13 @@ public class StrongerEndPoint {
 
     	try {
     		if (!outerLatch.await(10, TimeUnit.SECONDS)) {
-        		async.resume(new InternalErrorException());
+        		//async.resume(new InternalErrorException());
     		}
     	} catch (Exception e) {
-    		async.resume(new InternalErrorException());
+    		//async.resume(new InternalErrorException());
     	}
     	
-		async.resume(response);
+		return response;
     }
 
 }

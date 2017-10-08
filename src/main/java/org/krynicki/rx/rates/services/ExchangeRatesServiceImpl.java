@@ -6,7 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.krynicki.rx.model.ExchangeRatesResponse;
 
 import io.reactivex.Single;
+import org.springframework.stereotype.Component;
 
+
+@Component
 public class ExchangeRatesServiceImpl implements ExchangeRatesService {
 	
 	private ExchangeRatesAdapter exchangeRatesAdapter;

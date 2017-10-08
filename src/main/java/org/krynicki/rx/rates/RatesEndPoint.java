@@ -6,37 +6,27 @@ import java.util.concurrent.TimeUnit;
 import io.reactivex.SingleObserver;
 import io.reactivex.disposables.Disposable;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.container.AsyncResponse;
-import javax.ws.rs.container.Suspended;
-import javax.ws.rs.core.MediaType;
-
 import org.krynicki.rx.model.ExchangeRatesResponse;
 
-import org.glassfish.jersey.server.ManagedAsync;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import org.krynicki.rx.exceptions.CurrencyNotFoundException;
-import org.krynicki.rx.exceptions.InternalErrorException;
 
 import org.krynicki.rx.rates.responses.RateResponse;
 import org.krynicki.rx.rates.services.ExchangeRatesService;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
 
-@Path("org/krynicki/rx/rates/{baseCurrency}/{counterCurrency}")
+@RestController
 public class RatesEndPoint {
 	
 	@Autowired
 	private ExchangeRatesService exchangeRatesService;
 	
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @ManagedAsync
-    public void getRates(@Suspended final AsyncResponse async, 
-    		@PathParam("baseCurrency") final String baseCurrency,
-    		@PathParam("counterCurrency") final String counterCurrency) {
+    @GetMapping(path = "rates/{baseCurrency}/{counterCurrency}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public RateResponse getRates(
+    		@PathVariable final String baseCurrency,
+    		@PathVariable final String counterCurrency) {
     	
     	final RateResponse response = new RateResponse();
     	final CountDownLatch outerLatch = new CountDownLatch(1);
@@ -51,26 +41,26 @@ public class RatesEndPoint {
 				if (exchangeRatesResponse.getRates().containsKey(counterCurrency)) {
 					response.setRate(exchangeRatesResponse.getRates().get(counterCurrency));					
 				} else {
-		    		async.resume(new CurrencyNotFoundException());
+		    		//async.resume(new CurrencyNotFoundException());
 				}
 				
 				outerLatch.countDown();
 			}
 
 			public void onError(Throwable e) {
-	    		async.resume(e);
+	    		//async.resume(e);
 				outerLatch.countDown();
 			}
 		});
 
     	try {
     		if (!outerLatch.await(10, TimeUnit.SECONDS)) {
-        		async.resume(new InternalErrorException());
+        		//async.resume(new InternalErrorException());
     		}
     	} catch (Exception e) {
-    		async.resume(new InternalErrorException());
+    		//async.resume(new InternalErrorException());
     	}
     	
-		async.resume(response);
+		return response;
     }
 }

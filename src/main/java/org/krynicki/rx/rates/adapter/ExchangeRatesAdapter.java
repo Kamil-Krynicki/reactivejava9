@@ -13,9 +13,10 @@ import org.krynicki.rx.model.ExchangeRatesResponse;
 
 import com.google.gson.Gson;
 
-import org.krynicki.rx.exceptions.CurrencyNotFoundException;
-import org.krynicki.rx.exceptions.InternalErrorException;
+import org.springframework.stereotype.Component;
 
+
+@Component
 public class ExchangeRatesAdapter {
 
 	private static final String EXCHANGE_RATE_BASE_END_POINT = "http://api.fixer.io/latest?base=%s";
@@ -39,7 +40,7 @@ public class ExchangeRatesAdapter {
 		    		
 				} catch (Exception e) {
 					
-					subscriber.onError(new InternalErrorException());
+					//subscriber.onError(new InternalErrorException());
 				}
 			}
 		});		
@@ -61,7 +62,8 @@ public class ExchangeRatesAdapter {
     		return gson.fromJson(responseString, ExchangeRatesResponse.class);
 
 		} catch (Exception e) {
-			throw new CurrencyNotFoundException();
+			//throw new CurrencyNotFoundException();
+			throw new InternalError();
 		} finally {
     		in.close();
 		} 

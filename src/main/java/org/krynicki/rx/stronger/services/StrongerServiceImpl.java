@@ -9,10 +9,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import org.krynicki.rx.exceptions.InternalErrorException;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import org.krynicki.rx.exceptions.CurrencyNotFoundException;
 
 import org.krynicki.rx.rates.adapter.ExchangeRatesAdapter;
 
@@ -23,7 +20,10 @@ import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.Single;
 import io.reactivex.functions.BiFunction;
+import org.springframework.stereotype.Component;
 
+
+@Component
 public class StrongerServiceImpl implements StrongerService {
 
 	private static final String HISTORY_RATE_BASE_END_POINT = "http://api.fixer.io/%slatest?base=%s";
@@ -49,7 +49,7 @@ public class StrongerServiceImpl implements StrongerService {
 						BigDecimal yesterdayRate = t2.getRates().get(counterCurrency);
 						
 						if (todayRate == null || yesterdayRate == null) {
-							throw new CurrencyNotFoundException();
+							//throw new CurrencyNotFoundException();
 						}
 						
 						return todayRate.compareTo(yesterdayRate) > 0;
@@ -78,7 +78,7 @@ public class StrongerServiceImpl implements StrongerService {
 		    		emitter.onComplete();
 		    		
 				} catch (Exception e) {
-					emitter.onError(new InternalErrorException());
+					//emitter.onError(new InternalErrorException());
 				}
 			}
 		});
