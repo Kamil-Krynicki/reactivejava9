@@ -1,4 +1,4 @@
-package rates.adapter;
+package org.krynicki.rx.rates.adapter;
 
 import io.reactivex.Single;
 import io.reactivex.SingleEmitter;
@@ -9,12 +9,12 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import model.ExchangeRatesResponse;
+import org.krynicki.rx.model.ExchangeRatesResponse;
 
 import com.google.gson.Gson;
 
-import exceptions.CurrencyNotFoundException;
-import exceptions.InternalErrorException;
+import org.krynicki.rx.exceptions.CurrencyNotFoundException;
+import org.krynicki.rx.exceptions.InternalErrorException;
 
 public class ExchangeRatesAdapter {
 

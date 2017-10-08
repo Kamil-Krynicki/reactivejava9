@@ -1,9 +1,9 @@
-package rates.services;
+package org.krynicki.rx.rates.services;
 
+import org.krynicki.rx.rates.adapter.ExchangeRatesAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import rates.adapter.ExchangeRatesAdapter;
-import model.ExchangeRatesResponse;
+import org.krynicki.rx.model.ExchangeRatesResponse;
 
 import io.reactivex.Single;
 

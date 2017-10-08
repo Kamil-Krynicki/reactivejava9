@@ -1,4 +1,4 @@
-package rates;
+package org.krynicki.rx.rates;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -14,18 +14,18 @@ import javax.ws.rs.container.AsyncResponse;
 import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.MediaType;
 
-import model.ExchangeRatesResponse;
+import org.krynicki.rx.model.ExchangeRatesResponse;
 
 import org.glassfish.jersey.server.ManagedAsync;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import exceptions.CurrencyNotFoundException;
-import exceptions.InternalErrorException;
+import org.krynicki.rx.exceptions.CurrencyNotFoundException;
+import org.krynicki.rx.exceptions.InternalErrorException;
 
-import rates.responses.RateResponse;
-import rates.services.ExchangeRatesService;
+import org.krynicki.rx.rates.responses.RateResponse;
+import org.krynicki.rx.rates.services.ExchangeRatesService;
 
-@Path("rates/{baseCurrency}/{counterCurrency}")
+@Path("org/krynicki/rx/rates/{baseCurrency}/{counterCurrency}")
 public class RatesEndPoint {
 	
 	@Autowired

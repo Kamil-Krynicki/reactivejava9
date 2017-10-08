@@ -1,4 +1,4 @@
-package stronger.responses;
+package org.krynicki.rx.stronger.responses;
 
 public class StrongerResponse {
 

@@ -1,4 +1,4 @@
-package model;
+package org.krynicki.rx.model;
 
 import java.math.BigDecimal;
 import java.util.Map;

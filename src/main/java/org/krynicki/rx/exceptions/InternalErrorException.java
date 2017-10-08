@@ -1,4 +1,4 @@
-package exceptions;
+package org.krynicki.rx.exceptions;
 
 public class InternalErrorException extends Exception {
 

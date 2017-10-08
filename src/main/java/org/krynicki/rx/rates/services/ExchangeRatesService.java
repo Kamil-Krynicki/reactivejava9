@@ -1,6 +1,6 @@
-package rates.services;
+package org.krynicki.rx.rates.services;
 
-import model.ExchangeRatesResponse;
+import org.krynicki.rx.model.ExchangeRatesResponse;
 import io.reactivex.Single;
 
 public interface ExchangeRatesService {

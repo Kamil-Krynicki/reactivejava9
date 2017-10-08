@@ -1,4 +1,4 @@
-package stronger.services;
+package org.krynicki.rx.stronger.services;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -9,14 +9,14 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import org.krynicki.rx.exceptions.InternalErrorException;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import exceptions.CurrencyNotFoundException;
-import exceptions.InternalErrorException;
+import org.krynicki.rx.exceptions.CurrencyNotFoundException;
 
-import rates.adapter.ExchangeRatesAdapter;
+import org.krynicki.rx.rates.adapter.ExchangeRatesAdapter;
 
-import model.ExchangeRatesResponse;
+import org.krynicki.rx.model.ExchangeRatesResponse;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;

@@ -1,9 +1,7 @@
-import static org.junit.Assert.*;
 import io.reactivex.Single;
-import io.reactivex.functions.Consumer;
 import io.reactivex.subscribers.TestSubscriber;
 
-import model.ExchangeRatesResponse;
+import org.krynicki.rx.model.ExchangeRatesResponse;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -14,14 +12,13 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import exceptions.InternalErrorException;
+import org.krynicki.rx.exceptions.InternalErrorException;
 
-import rates.adapter.ExchangeRatesAdapter;
-import rates.services.ExchangeRatesServiceImpl;
+import org.krynicki.rx.rates.adapter.ExchangeRatesAdapter;
+import org.krynicki.rx.rates.services.ExchangeRatesServiceImpl;
 
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.when;
 
 public class ExchangeRatesServiceImplTests {
 

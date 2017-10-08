@@ -1,4 +1,4 @@
-package stronger.services;
+package org.krynicki.rx.stronger.services;
 
 import io.reactivex.Single;
 

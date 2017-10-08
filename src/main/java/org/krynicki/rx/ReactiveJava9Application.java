@@ -1,12 +1,12 @@
-package application;
+package org.krynicki.rx;
 
 import org.glassfish.jersey.server.ResourceConfig;
 
-import exceptions.CurrencyNotFoundMapper;
-import exceptions.InternalErrorMapper;
+import org.krynicki.rx.exceptions.CurrencyNotFoundMapper;
+import org.krynicki.rx.exceptions.InternalErrorMapper;
 
-import rates.RatesEndPoint;
-import stronger.StrongerEndPoint;
+import org.krynicki.rx.rates.RatesEndPoint;
+import org.krynicki.rx.stronger.StrongerEndPoint;
 
 public class ReactiveJava9Application extends ResourceConfig {
 

@@ -1,9 +1,7 @@
-package stronger;
+package org.krynicki.rx.stronger;
 
 import io.reactivex.SingleObserver;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.observers.DisposableObserver;
-import io.reactivex.subscribers.DisposableSubscriber;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -17,14 +15,13 @@ import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.MediaType;
 
 import org.glassfish.jersey.server.ManagedAsync;
+import org.krynicki.rx.exceptions.InternalErrorException;
+import org.krynicki.rx.stronger.services.StrongerService;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import exceptions.InternalErrorException;
+import org.krynicki.rx.stronger.responses.StrongerResponse;
 
-import stronger.responses.StrongerResponse;
-import stronger.services.StrongerService;
-
-@Path("stronger/{baseCurrency}/{counterCurrency}")
+@Path("org/krynicki/rx/stronger/{baseCurrency}/{counterCurrency}")
 public class StrongerEndPoint {
 
 	@Autowired

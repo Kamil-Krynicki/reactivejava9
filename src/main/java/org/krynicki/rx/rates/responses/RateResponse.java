@@ -1,4 +1,4 @@
-package rates.responses;
+package org.krynicki.rx.rates.responses;
 
 import java.math.BigDecimal;
 
