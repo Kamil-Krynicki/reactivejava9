@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.Calendar;
 
 import jdk.dynalink.linker.ConversionComparator;
+import org.krynicki.rx.exceptions.CurrencyNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.krynicki.rx.rates.adapter.ExchangeRatesAdapter;
@@ -29,12 +30,11 @@ public class StrongerServiceImpl implements StrongerService {
 				ratesAdapter.getExchangeRates(baseCurrency, getYesterday()).toObservable(),
 				new BiFunction<ExchangeRatesResponse, ExchangeRatesResponse, Boolean>() {
 					public Boolean apply(ExchangeRatesResponse t1, ExchangeRatesResponse t2) throws Exception {
-
 						BigDecimal todayRate = t1.getRate(counterCurrency);
 						BigDecimal yesterdayRate = t2.getRate(counterCurrency);
 
 						if (todayRate == null || yesterdayRate == null) {
-							//throw new CurrencyNotFoundException();
+							throw new CurrencyNotFoundException();
 						}
 
 						return todayRate.compareTo(yesterdayRate) > 0;
