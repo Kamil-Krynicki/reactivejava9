@@ -7,6 +7,7 @@ import io.reactivex.SingleOnSubscribe;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URL;
 
 import org.krynicki.rx.model.ExchangeRatesResponse;
@@ -14,6 +15,7 @@ import org.krynicki.rx.model.ExchangeRatesResponse;
 import com.google.gson.Gson;
 
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 
 
 @Component
@@ -28,15 +30,12 @@ public class ExchangeRatesAdapter {
 			public void subscribe(SingleEmitter<ExchangeRatesResponse> subscriber) {
 				
 				try {
-					String endPoint = String.format(EXCHANGE_RATE_BASE_END_POINT, base);
-		    		URL obj = new URL(endPoint);
-		    		
-		    		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-		    		con.setRequestMethod("GET");
 
-		    		BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-		    		ExchangeRatesResponse response = readRatesFromResponse(in);
-		    		subscriber.onSuccess(response);
+					String endPoint = String.format(EXCHANGE_RATE_BASE_END_POINT, base);
+					RestTemplate template = new RestTemplate();
+					ExchangeRatesResponse re = template.getForObject(new URI(endPoint), ExchangeRatesResponse.class);
+
+		    		subscriber.onSuccess(re);
 		    		
 				} catch (Exception e) {
 					
@@ -45,27 +44,4 @@ public class ExchangeRatesAdapter {
 			}
 		});		
 	}	
-
-	public ExchangeRatesResponse readRatesFromResponse(BufferedReader in) throws Exception {
-		
-		String inputLine;
-		StringBuffer response = new StringBuffer();
-
-		try {
-			while ((inputLine = in.readLine()) != null) {
-    			response.append(inputLine);
-    		}
-    		in.close();
-    		
-    		String responseString = response.toString();
-    		Gson gson = new Gson();
-    		return gson.fromJson(responseString, ExchangeRatesResponse.class);
-
-		} catch (Exception e) {
-			//throw new CurrencyNotFoundException();
-			throw new InternalError();
-		} finally {
-    		in.close();
-		} 
-	}
 }

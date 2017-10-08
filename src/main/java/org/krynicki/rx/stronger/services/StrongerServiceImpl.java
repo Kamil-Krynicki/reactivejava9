@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -21,12 +22,13 @@ import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.Single;
 import io.reactivex.functions.BiFunction;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 
 
 @Component
 public class StrongerServiceImpl implements StrongerService {
 
-	private static final String HISTORY_RATE_BASE_END_POINT = "http://api.fixer.io/%slatest?base=%s";
+	private static final String HISTORY_RATE_BASE_END_POINT = "http://api.fixer.io/%s?base=%s";
 	private static final String DATE_FORMAT = "yyyy-MM-dd";
 
 	private ExchangeRatesAdapter ratesAdapter;
@@ -66,15 +68,12 @@ public class StrongerServiceImpl implements StrongerService {
 				try {
 					String yesterdaysDate = getYesterdaysDateFormatted();
 					String endPoint = String.format(HISTORY_RATE_BASE_END_POINT, yesterdaysDate, baseCurrency);
-		    		URL obj = new URL(endPoint);
-		    		
-		    		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-		    		con.setRequestMethod("GET");
+		    		URI obj = new URI(endPoint);
 
-		    		BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-		    		ExchangeRatesResponse response = ratesAdapter.readRatesFromResponse(in);
+					RestTemplate template = new RestTemplate();
+					ExchangeRatesResponse re = template.getForObject(new URI(endPoint), ExchangeRatesResponse.class);
 
-		    		emitter.onNext(response);
+		    		emitter.onNext(re);
 		    		emitter.onComplete();
 		    		
 				} catch (Exception e) {
