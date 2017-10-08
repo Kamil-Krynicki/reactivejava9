@@ -3,13 +3,11 @@ package org.krynicki.rx.stronger.services;
 import java.math.BigDecimal;
 import java.util.Calendar;
 
-import jdk.dynalink.linker.ConversionComparator;
 import org.krynicki.rx.exceptions.CurrencyNotFoundException;
+import org.krynicki.rx.forex.service.ExchangeRatesAdapterService;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import org.krynicki.rx.rates.adapter.ExchangeRatesAdapter;
-
-import org.krynicki.rx.model.ExchangeRatesResponse;
+import org.krynicki.rx.forex.model.ExchangeRatesResponse;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
@@ -21,7 +19,7 @@ import org.springframework.stereotype.Component;
 public class StrongerServiceImpl implements StrongerService {
 
 	@Autowired
-	private ExchangeRatesAdapter ratesAdapter;
+	private ExchangeRatesAdapterService ratesAdapter;
 
 	public Single<Boolean> isStronger(final String baseCurrency, final String counterCurrency) {
 

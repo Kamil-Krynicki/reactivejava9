@@ -6,13 +6,13 @@
 
     <!--<bean id="exchangeRatesService" class="org.krynicki.rx.rates.services.ExchangeRatesServiceImpl">-->
 		<!--<constructor-arg>-->
-    	    <!--<bean id="exchangeRatesAdapter" class="org.krynicki.rx.rates.adapter.ExchangeRatesAdapter"/>-->
+    	    <!--<bean exchangeRatesAdapterServicepter" claExchangeRatesAdapterpter"/>-->
     	<!--</constructor-arg>-->
     <!--</bean>-->
     <!---->
     <!--<bean id="strongerService" class="org.krynicki.rx.stronger.services.StrongerServiceImpl">-->
 		<!--<constructor-arg>-->
-    	    <!--<bean id="ratesAdapter" class="org.krynicki.rx.rates.adapter.ExchangeRatesAdapter"/>-->
+    	    <!--<bean id="ratesAdapter" claExchangeRatesAdapterpter"/>-->
     	<!--</constructor-arg>-->
     <!--</bean>-->
 

@@ -9,7 +9,6 @@ public class StrongerResponse {
 	}
 	
 	public StrongerResponse(Boolean stronger) {
-		
 		this.stronger = stronger;
 	}
 

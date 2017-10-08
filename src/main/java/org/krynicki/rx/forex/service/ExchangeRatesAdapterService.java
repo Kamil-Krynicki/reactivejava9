@@ -1,4 +1,4 @@
-package org.krynicki.rx.rates.adapter;
+package org.krynicki.rx.forex.service;
 
 import io.reactivex.*;
 
@@ -8,14 +8,14 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import org.krynicki.rx.exceptions.CurrencyNotFoundException;
-import org.krynicki.rx.model.ExchangeRatesResponse;
+import org.krynicki.rx.forex.model.ExchangeRatesResponse;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 
 @Component
-public class ExchangeRatesAdapter {
+public class ExchangeRatesAdapterService {
 
     private static final String EXCHANGE_RATE_BASE_END_POINT = "http://api.fixer.io/latest?base=%s";
     private static final String HISTORY_RATE_BASE_END_POINT = "http://api.fixer.io/%s?base=%s";

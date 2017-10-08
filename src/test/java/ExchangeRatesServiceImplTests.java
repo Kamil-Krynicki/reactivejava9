@@ -1,7 +1,8 @@
 import io.reactivex.Single;
 import io.reactivex.subscribers.TestSubscriber;
 
-import org.krynicki.rx.model.ExchangeRatesResponse;
+import org.krynicki.rx.forex.service.ExchangeRatesAdapterService;
+import org.krynicki.rx.forex.model.ExchangeRatesResponse;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -12,7 +13,6 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import org.krynicki.rx.rates.adapter.ExchangeRatesAdapter;
 import org.krynicki.rx.rates.services.ExchangeRatesServiceImpl;
 
 import static org.mockito.Mockito.doThrow;
@@ -20,7 +20,8 @@ import static org.mockito.Mockito.doReturn;
 
 public class ExchangeRatesServiceImplTests {
 
-	@Mock ExchangeRatesAdapter mockAdapter;
+	@Mock
+	ExchangeRatesAdapterService mockAdapter;
 
 	private ExchangeRatesServiceImpl sut;
 	private String baseCurrency = "EUR";
