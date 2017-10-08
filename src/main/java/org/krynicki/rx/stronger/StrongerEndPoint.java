@@ -14,47 +14,40 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.async.DeferredResult;
 
 @RestController
 public class StrongerEndPoint {
 
-	@Autowired
-	private StrongerService strongerService;
+    private StrongerService strongerService;
+
+    @Autowired
+    public StrongerEndPoint(StrongerService strongerService) {
+        this.strongerService = strongerService;
+    }
 
     @GetMapping(path = "/stronger/{baseCurrency}/{counterCurrency}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public StrongerResponse getRates(
-    		@PathVariable final String baseCurrency,
-    		@PathVariable final String counterCurrency) {
-    	
-    	final StrongerResponse response = new StrongerResponse();
-    	
-    	final CountDownLatch outerLatch = new CountDownLatch(1);
-    	
-    	strongerService.isStronger(baseCurrency, counterCurrency).subscribe(new SingleObserver<Boolean>() {
+    public DeferredResult<StrongerResponse> getRates(
+            @PathVariable final String baseCurrency,
+            @PathVariable final String counterCurrency) {
 
-			public void onSubscribe(Disposable d) {}
+        final DeferredResult<StrongerResponse> response = new DeferredResult<>();
 
-			public void onSuccess(Boolean result) {
-				response.setStronger(result);
-				outerLatch.countDown();
-			}
+        strongerService.isStronger(baseCurrency, counterCurrency)
+                .subscribe(new SingleObserver<Boolean>() {
+                    public void onSubscribe(Disposable d) {
+                    }
 
-			public void onError(Throwable e) {
-				//async.resume(e);
-				outerLatch.countDown();
-			}
-		});
+                    public void onSuccess(Boolean result) {
+                        response.setResult(new StrongerResponse(result));
+                    }
 
+                    public void onError(Throwable e) {
+                        response.setErrorResult(e);
+                    }
+                });
 
-    	try {
-    		if (!outerLatch.await(10, TimeUnit.SECONDS)) {
-        		//async.resume(new InternalErrorException());
-    		}
-    	} catch (Exception e) {
-    		//async.resume(new InternalErrorException());
-    	}
-    	
-		return response;
+        return response;
     }
 
 }
