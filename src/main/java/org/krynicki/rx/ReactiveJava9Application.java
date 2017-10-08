@@ -8,7 +8,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class ReactiveJava9Application {
-
     public static void main(String... args) {
 		SpringApplication.run(ReactiveJava9Application.class, args);
 	}

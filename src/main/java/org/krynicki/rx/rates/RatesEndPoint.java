@@ -38,8 +38,8 @@ public class RatesEndPoint {
 
 			public void onSuccess(ExchangeRatesResponse exchangeRatesResponse) {
 
-				if (exchangeRatesResponse.getRates().containsKey(counterCurrency)) {
-					response.setRate(exchangeRatesResponse.getRates().get(counterCurrency));
+				if (exchangeRatesResponse.hasRate(counterCurrency)) {
+					response.setRate(exchangeRatesResponse.getRate(counterCurrency));
 				} else {
 		    		//async.resume(new CurrencyNotFoundException());
 				}

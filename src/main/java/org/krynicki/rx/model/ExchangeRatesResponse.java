@@ -35,11 +35,15 @@ public class ExchangeRatesResponse {
 	public void setDate(String date) {
 		this.date = date;
 	}
-	
-	public Map<String, BigDecimal> getRates() {
-		return rates;
+
+	public BigDecimal getRate(String currency) {
+		return rates.getOrDefault(currency, BigDecimal.ZERO);
 	}
-	
+
+	public boolean hasRate(String currency) {
+		return rates.containsKey(currency);
+	}
+
 	public void setRates(Map<String, BigDecimal> rates) {
 		this.rates = rates;
 	}

@@ -11,15 +11,10 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ExchangeRatesServiceImpl implements ExchangeRatesService {
-	
-	private ExchangeRatesAdapter exchangeRatesAdapter;
-	
+
 	@Autowired
-	public ExchangeRatesServiceImpl(ExchangeRatesAdapter exchangeRatesAdapter) {
-		
-		this.exchangeRatesAdapter = exchangeRatesAdapter;
-	}
-	
+	private ExchangeRatesAdapter exchangeRatesAdapter;
+
 	public Single<ExchangeRatesResponse> getExchangeRates(final String base) {
 		
 		return exchangeRatesAdapter.getExchangeRates(base);
